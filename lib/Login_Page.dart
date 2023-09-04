@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Password",
                                 ),
                                 Container(
@@ -131,6 +131,21 @@ class _LoginPageState extends State<LoginPage> {
                                                   })),
                                     ),
                                   ]),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    auth.signinEmail(
+                                        username.text, password.text);
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                        color: Colors.blueAccent,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: const Text("LOGIN"),
+                                  ),
                                 )
                               ],
                             ),

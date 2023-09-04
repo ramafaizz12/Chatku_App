@@ -8,6 +8,6 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User? firebaseuser = Provider.of<User?>(context);
-    return (firebaseuser == null) ? LoginPage() : HomePage();
+    return (firebaseuser == null) ? const LoginPage() : HomePage();
   }
 }

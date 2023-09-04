@@ -15,8 +15,13 @@ class FirebaseService {
     UserCredential result =
         await _auth.signInWithEmailAndPassword(email: email, password: pass);
     User firebaseuser = result.user!;
+    _firestore
+        .collection('users')
+        .doc(firebaseuser.uid)
+        .set({'uid': firebaseuser.uid, 'email': firebaseuser.email});
     return firebaseuser;
   }
 
   static Stream<User?> get firebaseuserstream => _auth.authStateChanges();
+  static User? get firebaseuserauth => _auth.currentUser;
 }
