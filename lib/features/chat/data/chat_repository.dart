@@ -1,3 +1,4 @@
+import 'package:chat_app_firebase/features/chat/data/models/datachat.dart';
 import 'package:chat_app_firebase/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,6 +36,7 @@ class ChatService extends ChangeNotifier {
   Stream<QuerySnapshot> getMessage(String userid, String otheruserid) {
     List<String> ids = [otheruserid, userid];
     ids.sort();
+    List<DataChat> datachat = [];
     String chatroomid = ids.join("_");
 
     return _firestore

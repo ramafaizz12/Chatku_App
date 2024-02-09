@@ -1,5 +1,5 @@
-import 'package:chat_app_firebase/Chat_Page.dart';
-import 'package:chat_app_firebase/services/firebase_service.dart';
+import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
+import 'package:chat_app_firebase/features/chat/presentation/pages/chat_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  FirebaseService servis = FirebaseService();
+  AuthRepository servis = AuthRepository();
   bool grupchat = false;
 
   @override
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
             ],
           )
         ],
-        title: Text(FirebaseService.firebaseuserauth!.email!.toString()),
+        title: Text(AuthRepository.firebaseuserauth!.email!.toString()),
       ),
       body: Stack(children: [userlist(), buildgroupchat()]),
     );
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   Widget builduserlistview(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-    if (FirebaseService.firebaseuserauth!.email != data['email']) {
+    if (AuthRepository.firebaseuserauth!.email != data['email']) {
       return ListTile(
         title: Text(data['email']),
         onLongPress: () {

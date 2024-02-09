@@ -1,4 +1,4 @@
-import 'package:chat_app_firebase/services/firebase_service.dart';
+import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,7 +9,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  FirebaseService auth = FirebaseService();
+  AuthRepository auth = AuthRepository();
   final TextEditingController username = TextEditingController();
   final TextEditingController password = TextEditingController();
   bool isemailvalid = false;

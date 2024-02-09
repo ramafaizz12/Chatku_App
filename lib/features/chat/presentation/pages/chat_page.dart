@@ -1,5 +1,6 @@
-import 'package:chat_app_firebase/services/chat/chat_service.dart';
-import 'package:chat_app_firebase/services/firebase_service.dart';
+import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
+import 'package:chat_app_firebase/features/chat/data/chat_repository.dart';
+import 'package:chat_app_firebase/features/chat/presentation/widgets/chat_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ class Chatpage extends StatefulWidget {
 class _ChatpageState extends State<Chatpage> {
   final TextEditingController _message = TextEditingController();
   final ChatService servis = ChatService();
+  final ScrollController _scrollController = ScrollController();
 
   void sendmessage() async {
     if (_message.text.isNotEmpty) {
@@ -29,11 +31,22 @@ class _ChatpageState extends State<Chatpage> {
       appBar: AppBar(
         title: Text(widget.useremail),
       ),
-      body: Column(
-        children: [
-          Expanded(child: buildmessagelist()),
-          buildmessageinput(),
-        ],
+      body: LayoutBuilder(
+        builder: (context, p1) => Column(
+          children: [
+            SizedBox(
+                width: p1.maxWidth,
+                height: p1.maxHeight * 0.5,
+                child: buildmessagelist()),
+            SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+                width: p1.maxWidth,
+                height: p1.maxHeight * 0.3,
+                child: buildmessageinput()),
+          ],
+        ),
       ),
     );
   }
@@ -41,7 +54,7 @@ class _ChatpageState extends State<Chatpage> {
   Widget buildmessagelist() {
     return StreamBuilder(
       stream: servis.getMessage(
-          widget.userid, FirebaseService.firebaseuserauth!.uid),
+          widget.userid, AuthRepository.firebaseuserauth!.uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text("Error");
@@ -50,6 +63,7 @@ class _ChatpageState extends State<Chatpage> {
           return const CircularProgressIndicator();
         }
         return ListView(
+            controller: _scrollController,
             reverse: false,
             children:
                 snapshot.data!.docs.map((e) => buildmessageitem(e)).toList());
@@ -60,13 +74,16 @@ class _ChatpageState extends State<Chatpage> {
   Widget buildmessageitem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    var alignment = (data['senderid'] == FirebaseService.firebaseuserauth!.uid)
+    var alignment = (data['senderid'] == AuthRepository.firebaseuserauth!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
     return Container(
       alignment: alignment,
       child: Column(
-        children: [Text(data['senderemail']), Text(data['message'])],
+        children: [
+          Text(data['senderemail']),
+          ChatBubble(message: data['message'])
+        ],
       ),
     );
   }
@@ -82,6 +99,11 @@ class _ChatpageState extends State<Chatpage> {
         IconButton(
             onPressed: () {
               servis.sendMessage(widget.userid, _message.text);
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
             },
             icon: const Icon(Icons.send))
       ],

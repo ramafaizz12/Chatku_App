@@ -1,5 +1,5 @@
-import 'package:chat_app_firebase/Wrapper.dart';
-import 'package:chat_app_firebase/services/firebase_service.dart';
+import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
+import 'package:chat_app_firebase/features/auth/presentation/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +17,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: StreamProvider.value(
-            value: FirebaseService.firebaseuserstream,
+            value: AuthRepository.firebaseuserstream,
             initialData: null,
-            child: Wrapper()));
+            child: const Wrapper()));
   }
 }
