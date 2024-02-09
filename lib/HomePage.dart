@@ -1,8 +1,6 @@
 import 'package:chat_app_firebase/Chat_Page.dart';
 import 'package:chat_app_firebase/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FirebaseService servis = FirebaseService();
+  bool grupchat = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         ],
         title: Text(FirebaseService.firebaseuserauth!.email!.toString()),
       ),
-      body: userlist(),
+      body: Stack(children: [userlist(), buildgroupchat()]),
     );
   }
 
@@ -60,17 +59,34 @@ class _HomePageState extends State<HomePage> {
     if (FirebaseService.firebaseuserauth!.email != data['email']) {
       return ListTile(
         title: Text(data['email']),
+        onLongPress: () {
+          setState(() {
+            grupchat = true;
+          });
+        },
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    Chat_Page(useremail: data['email'], userid: data['uid']),
+                    Chatpage(useremail: data['email'], userid: data['uid']),
               ));
           ;
         },
       );
     }
+
     return Container();
+  }
+
+  Widget buildgroupchat() {
+    return grupchat != false
+        ? Padding(
+            padding: const EdgeInsets.only(right: 12, bottom: 12),
+            child: Align(
+                alignment: Alignment.bottomRight,
+                child: FloatingActionButton(onPressed: () {})),
+          )
+        : const SizedBox();
   }
 }

@@ -1,19 +1,18 @@
 import 'package:chat_app_firebase/services/chat/chat_service.dart';
 import 'package:chat_app_firebase/services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class Chat_Page extends StatefulWidget {
+class Chatpage extends StatefulWidget {
   final String useremail;
   final String userid;
-  const Chat_Page({super.key, required this.useremail, required this.userid});
+  const Chatpage({super.key, required this.useremail, required this.userid});
 
   @override
-  State<Chat_Page> createState() => _Chat_PageState();
+  State<Chatpage> createState() => _ChatpageState();
 }
 
-class _Chat_PageState extends State<Chat_Page> {
+class _ChatpageState extends State<Chatpage> {
   final TextEditingController _message = TextEditingController();
   final ChatService servis = ChatService();
 
@@ -45,12 +44,13 @@ class _Chat_PageState extends State<Chat_Page> {
           widget.userid, FirebaseService.firebaseuserauth!.uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text("Error");
+          return const Text("Error");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
         return ListView(
+            reverse: false,
             children:
                 snapshot.data!.docs.map((e) => buildmessageitem(e)).toList());
       },
@@ -77,13 +77,13 @@ class _Chat_PageState extends State<Chat_Page> {
         Expanded(
             child: TextField(
           controller: _message,
-          decoration: InputDecoration(hintText: "Enter Message"),
+          decoration: const InputDecoration(hintText: "Enter Message"),
         )),
         IconButton(
             onPressed: () {
               servis.sendMessage(widget.userid, _message.text);
             },
-            icon: Icon(Icons.send))
+            icon: const Icon(Icons.send))
       ],
     );
   }
