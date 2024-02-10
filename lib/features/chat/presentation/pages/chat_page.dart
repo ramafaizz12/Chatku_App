@@ -34,10 +34,10 @@ class _ChatpageState extends State<Chatpage> {
       body: LayoutBuilder(
         builder: (context, p1) => Column(
           children: [
-            SizedBox(
-                width: p1.maxWidth,
-                height: p1.maxHeight * 0.5,
-                child: buildmessagelist()),
+            // SizedBox(
+            //     width: p1.maxWidth,
+            //     height: p1.maxHeight * 0.5,
+            //     child: buildmessagelist()),
             SizedBox(
               height: 12,
             ),
@@ -51,42 +51,42 @@ class _ChatpageState extends State<Chatpage> {
     );
   }
 
-  Widget buildmessagelist() {
-    return StreamBuilder(
-      stream: servis.getMessage(
-          widget.userid, AuthRepository.firebaseuserauth!.uid),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Error");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
-        return ListView(
-            controller: _scrollController,
-            reverse: false,
-            children:
-                snapshot.data!.docs.map((e) => buildmessageitem(e)).toList());
-      },
-    );
-  }
+  // Widget buildmessagelist() {
+  //   return StreamBuilder(
+  //     stream: servis.getMessage(
+  //         widget.userid, AuthRepository.firebaseuserauth!.uid),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasError) {
+  //         return const Text("Error");
+  //       }
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return const CircularProgressIndicator();
+  //       }
+  //       return ListView(
+  //           controller: _scrollController,
+  //           reverse: false,
+  //           children:
+  //               snapshot.data!.docs.map((e) => buildmessageitem(e)).toList());
+  //     },
+  //   );
+  // }
 
-  Widget buildmessageitem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+  // Widget buildmessageitem(DocumentSnapshot document) {
+  //   Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    var alignment = (data['senderid'] == AuthRepository.firebaseuserauth!.uid)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
-    return Container(
-      alignment: alignment,
-      child: Column(
-        children: [
-          Text(data['senderemail']),
-          ChatBubble(message: data['message'])
-        ],
-      ),
-    );
-  }
+  //   var alignment = (data['senderid'] == AuthRepository.firebaseuserauth!.uid)
+  //       ? Alignment.centerRight
+  //       : Alignment.centerLeft;
+  //   return Container(
+  //     alignment: alignment,
+  //     child: Column(
+  //       children: [
+  //         Text(data['senderemail']),
+  //         ChatBubble(message: data['message'])
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget buildmessageinput() {
     return Row(

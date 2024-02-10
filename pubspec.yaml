@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^6.1.0
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
+  meta: ^1.10.0
   provider: ^6.0.5
 
 dev_dependencies:

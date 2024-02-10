@@ -1,7 +1,9 @@
+import 'package:chat_app_firebase/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
 import 'package:chat_app_firebase/features/auth/presentation/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -19,10 +21,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: StreamProvider.value(
-            value: AuthRepository.firebaseuserstream,
-            initialData: null,
-            child: const Wrapper()));
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (BuildContext context) => AuthBloc(),
+        )
+      ],
+      child:
+          const MaterialApp(debugShowCheckedModeBanner: false, home: Wrapper()),
+    );
   }
 }

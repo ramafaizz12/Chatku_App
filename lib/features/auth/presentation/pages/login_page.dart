@@ -1,5 +1,8 @@
+import 'package:chat_app_firebase/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
+import 'package:chat_app_firebase/features/auth/presentation/widgets/status_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -33,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                 right: p1.maxWidth * 0.032),
             child: Column(
               children: [
+                onstatus(),
                 Align(
                   alignment: Alignment.topLeft,
                   child: FloatingActionButton(
@@ -134,8 +138,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    auth.signinEmail(
-                                        username.text, password.text);
+                                    context.read<AuthBloc>().add(LoginEvent(
+                                        email: username.text,
+                                        password: password.text));
                                   },
                                   child: Container(
                                     width: 120,
