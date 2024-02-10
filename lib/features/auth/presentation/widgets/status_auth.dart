@@ -1,4 +1,5 @@
 import 'package:chat_app_firebase/features/auth/bloc/auth_bloc.dart';
+import 'package:chat_app_firebase/shared/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,18 +9,44 @@ Widget onstatus() {
       if (state is AuthFailed) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: red,
             content: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.sms_failed,
                   // color: Theme.of(context).snackBarTheme.actionTextColor,
-                  color: Colors.grey.shade100,
+                  color: putihh,
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Text(
-                  state.message,
+                  "Gagal Login",
+                  style: textpoppins,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      if (state is AuthSukses) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: birumuda,
+            content: Row(
+              children: [
+                const Icon(
+                  Icons.sms_failed,
+                  // color: Theme.of(context).snackBarTheme.actionTextColor,
+                  color: putihh,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Berhasil Login",
+                  style: textpoppins,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

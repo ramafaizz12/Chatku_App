@@ -1,93 +1,145 @@
-import 'package:chat_app_firebase/features/auth/bloc/auth_bloc.dart';
-import 'package:chat_app_firebase/features/auth/data/auth_repository.dart';
+import 'package:chat_app_firebase/features/chat/presentation/pages/chat_page.dart';
+import 'package:chat_app_firebase/features/contact/presentation/pages/contact_page.dart';
+import 'package:chat_app_firebase/features/home/presentation/widgets/container_plus.dart';
+import 'package:chat_app_firebase/features/profile/presentation/pages/profile_page.dart';
+import 'package:chat_app_firebase/features/search/presentation/pages/search_page.dart';
 import 'package:chat_app_firebase/shared/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  AuthRepository servis = AuthRepository();
+  int? bottomnavbarindex;
+
+  PageController pagecontrol = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+
+    bottomnavbarindex = 0;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: putihh,
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: const Text("Logout"),
-                onTap: () {
-                  context.read<AuthBloc>().add(LogoutEvent());
-                },
-              )
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: pinkabu,
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+            child: LayoutBuilder(
+          builder: (context, p1) => Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: p1.maxWidth * 0.05,
+                    left: p1.maxWidth * 0.03,
+                    right: p1.maxWidth * 0.03),
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: SizedBox(
+                        width: p1.maxWidth,
+                        height: p1.maxHeight,
+                        child: PageView(
+                          controller: pagecontrol,
+                          onPageChanged: (value) {
+                            setState(() {
+                              bottomnavbarindex = value;
+                            });
+                          },
+                          children: const [
+                            Chatpage(),
+                            SearchPage(),
+                            ContactPage(),
+                            ProfilePage()
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(),
+                  child: Container(
+                      color: abuabu,
+                      width: p1.maxWidth,
+                      height: p1.maxHeight * 0.1,
+                      child: LayoutBuilder(
+                        builder: (p0, btm) => BottomNavigationBar(
+                            backgroundColor: abuabu,
+                            type: BottomNavigationBarType.fixed,
+                            onTap: (value) {
+                              setState(() {
+                                bottomnavbarindex = value;
+                                pagecontrol.jumpToPage(value);
+                              });
+                            },
+                            currentIndex: bottomnavbarindex!,
+                            selectedLabelStyle: textpress.copyWith(
+                                fontSize: btm.maxHeight * 0.1),
+                            unselectedLabelStyle: textpress.copyWith(
+                                fontSize: btm.maxHeight * 0.1),
+                            selectedItemColor: colorbiru,
+                            unselectedItemColor: pinkabu,
+                            items: [
+                              BottomNavigationBarItem(
+                                  label: "",
+                                  icon: SizedBox(
+                                      height: btm.maxHeight * 0.43,
+                                      width: btm.maxWidth * 0.2,
+                                      child: const Icon(Icons.chat_bubble))),
+                              BottomNavigationBarItem(
+                                  label: "",
+                                  icon: Padding(
+                                    padding: EdgeInsets.only(
+                                        right: p1.maxWidth * 0.12),
+                                    child: SizedBox(
+                                        height: btm.maxHeight * 0.43,
+                                        child: const Icon(Icons.search)),
+                                  )),
+                              BottomNavigationBarItem(
+                                  label: "",
+                                  icon: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: p1.maxWidth * 0.12),
+                                    child: SizedBox(
+                                        height: btm.maxHeight * 0.43,
+                                        child: const Icon(Icons.phone)),
+                                  )),
+                              BottomNavigationBarItem(
+                                  label: "",
+                                  icon: SizedBox(
+                                      height: btm.maxHeight * 0.43,
+                                      child: const Icon(Icons.person))),
+                            ]),
+                      )),
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(bottom: p1.maxHeight * 0.02),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ContainerPlus(
+                        width: p1.maxWidth * 0.3, height: p1.maxHeight * 0.12),
+                  )),
             ],
-          )
-        ],
-        title: Text("HomePage"),
+          ),
+        )),
       ),
-      // body: Stack(children: [buildgroupchat()]),
     );
   }
-
-  // Widget userlist() {
-  //   return StreamBuilder(
-  //       stream: FirebaseFirestore.instance.collection('users').snapshots(),
-  //       builder: (context, snapshot) {
-  //         if (snapshot.hasError) {
-  //           return const Text("Error");
-  //         }
-  //         if (snapshot.connectionState == ConnectionState.waiting) {
-  //           return const CircularProgressIndicator();
-  //         }
-  //         return ListView(
-  //             children: snapshot.data!.docs
-  //                 .map((e) => builduserlistview(e))
-  //                 .toList());
-  //       });
-  // }
-
-  // Widget builduserlistview(DocumentSnapshot document) {
-  //   Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-
-  //   if (AuthRepository.firebaseuserauth!.email != data['email']) {
-  //     return ListTile(
-  //       title: Text(data['email']),
-  //       onLongPress: () {
-  //         setState(() {
-  //           grupchat = true;
-  //         });
-  //       },
-  //       onTap: () {
-  //         Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) =>
-  //                   Chatpage(useremail: data['email'], userid: data['uid']),
-  //             ));
-  //         ;
-  //       },
-  //     );
-  //   }
-
-  //   return Container();
-  // }
-
-  // Widget buildgroupchat() {
-  //   return grupchat != false
-  //       ? Padding(
-  //           padding: const EdgeInsets.only(right: 12, bottom: 12),
-  //           child: Align(
-  //               alignment: Alignment.bottomRight,
-  //               child: FloatingActionButton(onPressed: () {})),
-  //         )
-  //       : const SizedBox();
-  // }
 }
