@@ -1,4 +1,4 @@
-import 'package:chat_app_firebase/features/chat/data/chat_repository.dart';
+import 'package:chat_app_firebase/features/chat/presentation/pages/chat_room_page.dart';
 import 'package:chat_app_firebase/features/chat/presentation/widgets/container_circle.dart';
 import 'package:chat_app_firebase/features/chat/presentation/widgets/container_list_people.dart';
 import 'package:chat_app_firebase/features/chat/presentation/widgets/container_slide.dart';
@@ -46,8 +46,17 @@ class _ChatpageState extends State<Chatpage> {
                       crossAxisSpacing: 10.0,
                       crossAxisCount: 1,
                       childAspectRatio: (24 / 5)),
-                  itemBuilder: (context, index) => ContainerPeople(
-                      height: p1.maxHeight * 0.12, width: p1.maxHeight)),
+                  itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatRoom(),
+                              ));
+                        },
+                        child: ContainerPeople(
+                            height: p1.maxHeight * 0.12, width: p1.maxHeight),
+                      )),
             ),
           ],
         ),

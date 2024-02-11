@@ -18,7 +18,7 @@ class ContainerPeople extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
+            const Icon(
               Icons.person,
               color: pinkabu,
             ),
