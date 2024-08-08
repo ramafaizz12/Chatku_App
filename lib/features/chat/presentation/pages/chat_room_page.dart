@@ -69,10 +69,13 @@ class ChatRoom extends StatelessWidget {
                     height: p1.maxHeight * 0.83,
                   ),
                 ),
-                MessageInput(
-                  message: message,
-                  width: p1.maxWidth * 0.9,
-                  height: p1.maxHeight * 0.06,
+                Padding(
+                  padding: EdgeInsets.only(bottom: p1.maxHeight * 0.01),
+                  child: MessageInput(
+                    message: message,
+                    width: p1.maxWidth * 0.9,
+                    height: p1.maxHeight * 0.05,
+                  ),
                 )
               ],
             ),

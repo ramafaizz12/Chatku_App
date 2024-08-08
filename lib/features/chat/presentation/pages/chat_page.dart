@@ -51,7 +51,7 @@ class _ChatpageState extends State<Chatpage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatRoom(),
+                                builder: (context) => const ChatRoom(),
                               ));
                         },
                         child: ContainerPeople(
